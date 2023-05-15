@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +24,8 @@ public class PokeBattleController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Pokemon> getPokemon(@PathVariable("name") String name) {
         Pokemon pokemon = pokeBattleService.findPokemon(name);
-        return ResponseEntity.ok().body(pokemon);
+        return Objects.nonNull(pokemon) ? ResponseEntity.ok().body(pokemon) : ResponseEntity.notFound().build();
+
     }
 
     @GetMapping("{name}/forms")

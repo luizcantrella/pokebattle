@@ -49,8 +49,16 @@ public class PokeBatllerControllerTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/pokemon/pikachu")
         ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
+    @Test
+    public void testGetPokemonNotFound() throws Exception {
 
+        Mockito.when(service.findPokemon("meuPokemon")).thenReturn(null);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/pokemon/meuPokemon")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

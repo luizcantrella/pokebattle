@@ -16,16 +16,22 @@ public class PokeBattleService {
     private final PokeApiClient pokeApiClient;
 
     public Pokemon findPokemon(String name) {
-        Pokemon pokemon = pokeApiClient.getPokemonByName(name);
-        List<LocationAreaEncounter> areasWhereCanFound = pokeApiClient.getAreasWhereCanFound(
-                pokemon.getId().toString()
-        );
-        log.info("areas where can be found: {}", areasWhereCanFound);
-        pokemon.setAreaEncounters(areasWhereCanFound);
+        Pokemon pokemon;
+        try {
+            pokemon = pokeApiClient.getPokemonByName(name);
+            List<LocationAreaEncounter> areasWhereCanFound = pokeApiClient.getAreasWhereCanFound(
+                    pokemon.getId().toString()
+            );
+            log.info("areas where can be found: {}", areasWhereCanFound);
+            pokemon.setAreaEncounters(areasWhereCanFound);
 
-        //
-        Integer sum = sumPokemonStats(pokemon);
-        log.info("Pokémon {} has sum stats {}", pokemon.getName(), sum.toString());
+            //
+            Integer sum = sumPokemonStats(pokemon);
+            log.info("Pokémon {} has sum stats {}", pokemon.getName(), sum.toString());
+        } catch (Exception e){
+            log.info("pokemon não encontrado");
+            pokemon = null;
+        }
         return pokemon;
     }
 

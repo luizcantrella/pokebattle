@@ -2,10 +2,7 @@ package com.ada.pokeapi.pokebattle.service;
 
 import com.ada.pokeapi.pokebattle.client.PokeApiClient;
 import com.ada.pokeapi.pokebattle.model.*;
-import com.google.common.math.Stats;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +30,14 @@ public class PokeBatleService {
     @BeforeEach
     public void setup(){
         nome = "pikachu";
+    }
+
+    @Test
+    public void testFindPokemonThrowsException() throws Exception {
+
+        Mockito.when(pokeApi.getPokemonByName(Mockito.anyString())).thenThrow(NullPointerException.class);
+        Pokemon poke = service.findPokemon("meuPokemon");
+        Assert.isNull(poke,"Pokemon retornado é nulo");
     }
 
     @Test
