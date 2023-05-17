@@ -35,13 +35,31 @@ public class PokeBattleService {
         return pokemon;
     }
 
-    public EvoluationChain findForms(String name) {
+    public EvolutionChainResponse findForms(String name) {
         log.info("GET Request: /pokemon-species/{}",name);
+        EvolutionChainResponse evolutionChainResponse = new EvolutionChainResponse();
+        try {
         PokemonSpecies pokemonSpeciesByName = pokeApiClient.getPokemonSpeciesByName(name);
         String url = pokemonSpeciesByName.getEvolution_chain().get("url");
         List<String> urlSplited = List.of(url.split("/"));
         String evolutionId = urlSplited.get(6);
-        return pokeApiClient.getEvolutionChainByUrl(evolutionId);
+        EvolutionChain evolutionChain = pokeApiClient.getEvolutionChainByUrl(evolutionId);
+        evolutionChainResponse = new EvolutionChainResponse();
+        List<ChainLink> evolvesTo = evolutionChain.getChain().getEvolves_to();
+        evolutionChainResponse.getForms().add(evolutionChain.getChain().getSpecies().getName());
+        while(evolvesTo.size() > 0) {
+            var i = 0;
+            while(i < evolvesTo.size()) {
+                evolutionChainResponse.getForms().add(evolvesTo.get(i).getSpecies().getName());
+                i++;
+            }
+            evolvesTo = evolvesTo.get(0).getEvolves_to();
+        }
+        } catch (Exception e){
+            log.info("pokemon não encontrado");
+            evolutionChainResponse = null;
+        }
+        return evolutionChainResponse;
     }
 
     private Integer sumPokemonStats(Pokemon pokemon) {
@@ -51,6 +69,7 @@ public class PokeBattleService {
     public String executeBattle(PokemonBattleRequest battleRequest) {
         Pokemon challenger = this.findPokemon(battleRequest.getChallenger());
         Pokemon challenged = this.findPokemon(battleRequest.getChallenged());
+        if(challenged == null || challenger == null) return null;
 
         Integer challengerStats = sumPokemonStats(challenger);
         Integer challengedStats = sumPokemonStats(challenged);

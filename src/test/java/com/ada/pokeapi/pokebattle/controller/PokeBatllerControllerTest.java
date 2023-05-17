@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -73,8 +72,8 @@ public class PokeBatllerControllerTest {
                 .species(species)
                 .build();
 
-        EvoluationChain evoluationChain = EvoluationChain.builder()
-                .chain(chain)
+        EvolutionChainResponse evoluationChain = EvolutionChainResponse.builder()
+                .forms(new ArrayList<>())
                 .build();
 
         Mockito.when(service.findForms("pikachu")).thenReturn(evoluationChain);

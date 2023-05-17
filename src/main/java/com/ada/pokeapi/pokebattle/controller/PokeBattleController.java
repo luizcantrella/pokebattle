@@ -1,6 +1,7 @@
 package com.ada.pokeapi.pokebattle.controller;
 
-import com.ada.pokeapi.pokebattle.model.EvoluationChain;
+import com.ada.pokeapi.pokebattle.model.EvolutionChain;
+import com.ada.pokeapi.pokebattle.model.EvolutionChainResponse;
 import com.ada.pokeapi.pokebattle.model.Pokemon;
 import com.ada.pokeapi.pokebattle.model.PokemonBattleRequest;
 import com.ada.pokeapi.pokebattle.service.PokeBattleService;
@@ -30,9 +31,9 @@ public class PokeBattleController {
 
     @GetMapping("{name}/forms")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EvoluationChain> getForms(@PathVariable("name") String name) {
-        EvoluationChain evoluationChain = pokeBattleService.findForms(name);
-        return ResponseEntity.ok().body(evoluationChain);
+    public ResponseEntity<EvolutionChainResponse> getForms(@PathVariable("name") String name) {
+        EvolutionChainResponse evoluationChain = pokeBattleService.findForms(name);
+        return Objects.nonNull(evoluationChain) ? ResponseEntity.ok().body(evoluationChain) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
@@ -40,7 +41,7 @@ public class PokeBattleController {
         Map<String, String> response = new HashMap<>();
         String battleWinner = pokeBattleService.executeBattle(battleRequest);
         response.put("winner", battleWinner);
-        return ResponseEntity.ok().body(response);
+        return Objects.nonNull(battleWinner) ? ResponseEntity.ok().body(response) : ResponseEntity.notFound().build();
     }
 
 }

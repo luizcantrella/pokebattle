@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EvoluationChain {
+public class EvolutionChain {
 
     private ChainLink chain;
 }

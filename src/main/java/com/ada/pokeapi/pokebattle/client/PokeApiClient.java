@@ -1,11 +1,9 @@
 package com.ada.pokeapi.pokebattle.client;
 
-import com.ada.pokeapi.pokebattle.model.EvoluationChain;
+import com.ada.pokeapi.pokebattle.model.EvolutionChain;
 import com.ada.pokeapi.pokebattle.model.LocationAreaEncounter;
 import com.ada.pokeapi.pokebattle.model.Pokemon;
 import com.ada.pokeapi.pokebattle.model.PokemonSpecies;
-import feign.Param;
-import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,5 +23,5 @@ public interface PokeApiClient {
     List<LocationAreaEncounter> getAreasWhereCanFound(@PathVariable("id") String name);
 
     @GetMapping("/evolution-chain/{id}")
-    EvoluationChain getEvolutionChainByUrl(@PathVariable ("id") String url);
+    EvolutionChain getEvolutionChainByUrl(@PathVariable ("id") String url);
 }

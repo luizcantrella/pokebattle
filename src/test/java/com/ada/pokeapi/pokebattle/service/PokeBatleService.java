@@ -62,7 +62,9 @@ public class PokeBatleService {
         HashMap<String, String> url = new HashMap<>();
         url.put("url","/url/url/url/url/url/url/url");
 
-        EvoluationChain evoluationChain = EvoluationChain.builder().build();
+        EvolutionChain evoluationChain = EvolutionChain.builder()
+                .chain(ChainLink.builder().evolves_to(new ArrayList<>()).species(Species.builder().name(nome).build()).build())
+                .build();
 
         PokemonSpecies species = PokemonSpecies.builder()
                 .evolution_chain(url)
@@ -74,7 +76,7 @@ public class PokeBatleService {
         Mockito.when(pokeApi.getEvolutionChainByUrl(Mockito.anyString()))
                 .thenReturn(evoluationChain);
 
-        EvoluationChain result = service.findForms(nome);
+        EvolutionChainResponse result = service.findForms(nome);
 
         Assert.notNull(result, "Pokemon não é nulo");
     }
